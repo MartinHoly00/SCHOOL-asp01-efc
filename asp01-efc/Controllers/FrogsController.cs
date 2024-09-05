@@ -1,4 +1,5 @@
 ﻿using asp01_efc.Data;
+using asp01_efc.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,5 +44,15 @@ namespace asp01_efc.Controllers
             }
             return Ok(student);
         }
+
+        [HttpPost]
+        public IActionResult CreateFrog([FromBody] Student student)
+        {
+            if (student.ShoeSize > 50 || student.ShoeSize < 0) return BadRequest("Incorect Shoe Size");
+            _context.Students.Add(student);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetFrog), new { id = student.StudentId }, student);
+        }
+
     }
 }
